@@ -1,5 +1,7 @@
 package UI;
 
+import Service.ContratsService;
+import Service.OffresService;
 import Service.PartenaireService;
 
 import java.sql.SQLException;
@@ -9,8 +11,8 @@ public class MainMenu {
 
     private static final Scanner scanner = new Scanner(System.in);
     public static PartenaireService partenaireService = new PartenaireService();
-
-
+    public static ContratsService contratsService = new ContratsService();
+    public static OffresService offresService = new OffresService();
 
     public static void menu() throws ClassNotFoundException, InterruptedException, SQLException {
         while (true) {
@@ -129,7 +131,7 @@ public class MainMenu {
      */
 
 
-    public static void choicegestionDucontrats() throws ClassNotFoundException, InterruptedException {
+    public static void choicegestionDucontrats() throws ClassNotFoundException, InterruptedException, SQLException {
 
 
         boolean check = false;
@@ -155,23 +157,23 @@ public class MainMenu {
 
             switch (choice) {
                 case 1:
-
+                    contratsService.addContrat();
                     break;
 
                 case 2:
-
+                    contratsService.updateContrat();
                     break;
 
                 case 3:
-
+                    contratsService.deleteContrat();
                     break;
 
                 case 4:
-
+                    contratsService.getContrat();
                     break;
 
                 case 5:
-
+                    contratsService.getAllContrats();
                     break;
 
 
@@ -208,7 +210,7 @@ public class MainMenu {
      */
 
 
-    public static void choicegestionDuOffres() throws ClassNotFoundException {
+    public static void choicegestionDuOffres() throws ClassNotFoundException, SQLException, InterruptedException {
 
         boolean check = false;
 
@@ -233,19 +235,19 @@ public class MainMenu {
 
             switch (choice) {
                 case 1:
-
+                    offresService.addOffre();
                     break;
                 case 2:
-
+                    offresService.updateOffre();
                     break;
                 case 3:
-
+                    offresService.deleteOffre();
                     break;
                 case 4:
-
+                    offresService.getOffre();
                     break;
                 case 5:
-
+                    offresService.getAllOffres();
                     break;
                 case 6:
                     return;
