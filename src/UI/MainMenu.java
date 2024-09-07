@@ -1,11 +1,16 @@
 package UI;
 
+import Service.PartenaireService;
+
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class MainMenu {
 
     private static final Scanner scanner = new Scanner(System.in);
+    public static PartenaireService partenaireService = new PartenaireService();
+
+
 
     public static void menu() throws ClassNotFoundException, InterruptedException, SQLException {
         while (true) {
@@ -56,7 +61,7 @@ public class MainMenu {
 
 
 
-    public static void choicegestionDupartner() throws ClassNotFoundException, InterruptedException {
+    public static void choicegestionDupartner() throws ClassNotFoundException, InterruptedException, SQLException {
 
         boolean check = false;
 
@@ -84,19 +89,19 @@ public class MainMenu {
 
             switch (choice) {
                 case 1:
-
+                    partenaireService.addpartenaire();
                     break;
                 case 2:
-
+                    partenaireService.updatepartenaire();
                     break;
                 case 3:
-
+                    partenaireService.deletepartenaire();
                     break;
                 case 4:
-
+                    partenaireService.displayPartenaire();
                     break;
                 case 5:
-
+                    partenaireService.displayAllPartenaire();
                     break;
 
                 case 6:

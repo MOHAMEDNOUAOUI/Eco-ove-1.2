@@ -4,12 +4,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DBconnection {
+public class Database {
 
     public static Connection conn = null;
 
 
-    public static void DBconnection () {
+    public static void Database () {
         String URL = "jdbc:postgresql://localhost:5432/EcoMove";
         String USERNAME = "postgres";
         String PASSWORD = "root";
@@ -24,7 +24,7 @@ public class DBconnection {
 
     public static  Connection getConnection() {
         if (conn == null) {
-           DBconnection();
+           Database();
             return conn;
         }else {
             return conn;

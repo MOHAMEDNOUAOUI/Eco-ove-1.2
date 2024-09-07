@@ -1,7 +1,7 @@
 package Enum;
 
 public enum StatutContrat {
-    ENCOURS,
-    TERMINE,
-    SUSPENDU
+    encours,
+    termine,
+    suspendu
 }
