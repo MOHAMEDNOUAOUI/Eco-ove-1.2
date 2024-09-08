@@ -22,9 +22,6 @@ public class OffresRepository implements OffresRepositoryInterface {
 
     public static Offres fromResultSet(ResultSet rs) throws SQLException {
 
-        UUID contratId = rs.getObject("contrat_id", UUID.class);
-        Contrats contrat = contratsRepository.findOneContrat(contratId);
-
         Offres offer = new Offres();
         offer.setId(rs.getObject("id", UUID.class));
         offer.setNom_offre(rs.getString("nom_offre"));
@@ -35,7 +32,6 @@ public class OffresRepository implements OffresRepositoryInterface {
         offer.setConditions(rs.getString("conditions"));
         offer.setStatut_offre(StatutOffre.valueOf(rs.getString("statut_offre")));
         offer.setType_reduction(TypeReduction.valueOf(rs.getString("type_reduction")));
-        offer.setContrat(contrat);
 
         return offer;
 
@@ -150,12 +146,29 @@ public class OffresRepository implements OffresRepositoryInterface {
 
         try {
             conn = Database.getConnection();
-            String sql = "SELECT offres.contratid as contrat_id ,* FROM offres";
+            String sql = "Select C.date_debut as cdate_debut , C.date_fin as cdate_fin , C.tarif_special , C.conditions_accord , C.renouvelable , C.statut_contrat , C.partenaireid ,  Offres.* from Offres JOIN contrats as C on C.id = offres.contratid";
             stmt = conn.prepareStatement(sql);
             rs = stmt.executeQuery();
 
+
+
             while (rs.next()) {
                 Offres offre = fromResultSet(rs);
+
+                UUID contratID = rs.getObject("contratid" , UUID.class);
+                if(contratID != null){
+                    Contrats contrat = new Contrats();
+                    contrat.setId(contratID);
+                    contrat.setDate_debut(String.valueOf(rs.getDate("cdate_debut").toLocalDate()));
+                    contrat.setDate_fin(String.valueOf(rs.getDate("cdate_fin").toLocalDate()));
+                    contrat.setTarif_special(rs.getFloat("tarif_special"));
+                    contrat.setConditions_accord(rs.getString("conditions_accord"));
+                    contrat.setRenouvelable(rs.getBoolean("renouvelable"));
+                    contrat.setStatut_contrat(StatutContrat.valueOf(rs.getString("statut_contrat")));
+
+
+                    offre.setContrat(contrat);
+                }
                 offersList.add(offre);
             }
         } catch (SQLException e) {
@@ -179,7 +192,7 @@ public class OffresRepository implements OffresRepositoryInterface {
 
 
         conn = Database.getConnection();
-        String sql = "Select contrats.id as contrat_id , offres.id as offre_id ,* from Offres JOIN contrats on contrats.id = offres.contratid where offres.id = ? ";
+        String sql = "Select C.date_debut as cdate_debut , C.date_fin as cdate_fin , C.tarif_special , C.conditions_accord , C.renouvelable , C.statut_contrat , C.partenaireid ,  Offres.* from Offres JOIN contrats as C on C.id = offres.contratid WHERE Offres.id = ?";
 
         pstmt = conn.prepareStatement(sql);
         pstmt.setObject(1 , id);
@@ -191,6 +204,20 @@ public class OffresRepository implements OffresRepositoryInterface {
 
             offre = fromResultSet(rs);
 
+            UUID contratID = rs.getObject("contratid" , UUID.class);
+            if(contratID != null){
+                Contrats contrat = new Contrats();
+                contrat.setId(contratID);
+                contrat.setDate_debut(String.valueOf(rs.getDate("cdate_debut").toLocalDate()));
+                contrat.setDate_fin(String.valueOf(rs.getDate("cdate_fin").toLocalDate()));
+                contrat.setTarif_special(rs.getFloat("tarif_special"));
+                contrat.setConditions_accord(rs.getString("conditions_accord"));
+                contrat.setRenouvelable(rs.getBoolean("renouvelable"));
+                contrat.setStatut_contrat(StatutContrat.valueOf(rs.getString("statut_contrat")));
+
+
+                offre.setContrat(contrat);
+            }
 
         }
 

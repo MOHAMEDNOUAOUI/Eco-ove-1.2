@@ -17,7 +17,7 @@ import Enum.StatutContrat;
 
 public class PartenaireRepository implements PartenaireRepositoryInterface {
 
-
+    private static ContratsRepository contratsRepository = new ContratsRepository();
 
     public static Partenaire fromResultSet(ResultSet rs) throws SQLException {
 
@@ -49,9 +49,7 @@ public class PartenaireRepository implements PartenaireRepositoryInterface {
 
         try {
             conn = Database.getConnection();
-            String sql = "SELECT partenaire.id AS partenaire_id, contrats.id AS contrat_id, * " +
-                    "FROM partenaire " +
-                    "LEFT JOIN contrats ON contrats.partenaireid = partenaire.id " +
+            String sql = "select partenaire.* ,C.id as contrat_id , C.date_debut,C.date_fin , C.tarif_special , C.conditions_accord , C.renouvelable , C.statut_contrat  from partenaire LEFT JOIN contrats as C on C.partenaireid = partenaire.id\n" +
                     "WHERE partenaire.id = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setObject(1, id);
@@ -65,13 +63,14 @@ public class PartenaireRepository implements PartenaireRepositoryInterface {
                     UUID contratID = rs.getObject("contrat_id" , UUID.class);
                     if(contratID != null){
                         Contrats contrat = new Contrats();
-                        contrat.setId(rs.getObject("contrat_id" , UUID.class));
+                        contrat.setId(contratID);
                         contrat.setDate_debut(String.valueOf(rs.getDate("date_debut").toLocalDate()));
                         contrat.setDate_fin(String.valueOf(rs.getDate("date_fin").toLocalDate()));
                         contrat.setTarif_special(rs.getFloat("tarif_special"));
                         contrat.setConditions_accord(rs.getString("conditions_accord"));
                         contrat.setRenouvelable(rs.getBoolean("renouvelable"));
                         contrat.setStatut_contrat(StatutContrat.valueOf(rs.getString("statut_contrat")));
+
 
                         partenaire.SetContrats(contrat);
                     }
@@ -142,12 +141,27 @@ public class PartenaireRepository implements PartenaireRepositoryInterface {
 
         try{
             conn = Database.getConnection();
-            String sql = "SELECT * FROM partenaire";
+            String sql = "SELECT partenaire.* ,C.id as contrat_id , C.date_debut,C.date_fin , C.tarif_special , C.conditions_accord , C.renouvelable , C.statut_contrat  from partenaire LEFT JOIN contrats as C on C.partenaireid = partenaire.id";
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
                 Partenaire partenaire = fromResultSet(rs);
+                UUID contratID = rs.getObject("contrat_id" , UUID.class);
+                if(contratID != null){
+
+                    Contrats contrat = new Contrats();
+                    contrat.setId(contratID);
+                    contrat.setDate_debut(String.valueOf(rs.getDate("date_debut").toLocalDate()));
+                    contrat.setDate_fin(String.valueOf(rs.getDate("date_fin").toLocalDate()));
+                    contrat.setTarif_special(rs.getFloat("tarif_special"));
+                    contrat.setConditions_accord(rs.getString("conditions_accord"));
+                    contrat.setRenouvelable(rs.getBoolean("renouvelable"));
+                    contrat.setStatut_contrat(StatutContrat.valueOf(rs.getString("statut_contrat")));
+
+
+                    partenaire.SetContrats(contrat);
+                }
                 partenaires.add(partenaire);
             }
 

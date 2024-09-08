@@ -210,10 +210,12 @@ public class OffresService implements OffreServiceinterface {
         String offreIdString = scanner.nextLine();
 
         System.out.println("Alright ill go check if it exist , please wait a bit");
-        Thread.sleep(4000);
+
 
         UUID idoffre = UUID.fromString(offreIdString);
         Offres offre = offresRepository.getOffreById(idoffre);
+
+        Thread.sleep(4000);
 
         if(offre != null) {
             System.out.println("Alright Sir it defenityl exist , please look at the menu and choose what you wantt");

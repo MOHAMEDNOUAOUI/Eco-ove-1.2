@@ -1,6 +1,8 @@
 package Repository;
 
+import Model.Billets;
 import Model.Contrats;
+import Model.Offres;
 import Model.Partenaire;
 import Repository.Interface.ContratsRepositoryInterface;
 
@@ -17,12 +19,12 @@ import Service.PartenaireService;
 public class ContratsRepository implements ContratsRepositoryInterface {
 
     public static PartenaireRepository repository = new PartenaireRepository();
+    public static OffresRepository repositoryOffres = new OffresRepository();
+    public static BilletsRepository repositoryBillets = new BilletsRepository();
 
 
     public static Contrats fromResultSet(ResultSet rs) throws SQLException {
 
-        UUID partenaireId = rs.getObject("partenaireid", UUID.class);
-        Partenaire partenaire = repository.findPartenaireById(partenaireId);
 
         Contrats contrat = new Contrats();
         contrat.setId(rs.getObject("id" , UUID.class));
@@ -32,7 +34,6 @@ public class ContratsRepository implements ContratsRepositoryInterface {
         contrat.setConditions_accord(rs.getString("conditions_accord"));
         contrat.setRenouvelable(rs.getBoolean("renouvelable"));
         contrat.setStatut_contrat(StatutContrat.valueOf(rs.getString("statut_contrat")));
-        contrat.setPartenaire(partenaire);
 
         return contrat;
 
@@ -55,7 +56,7 @@ public class ContratsRepository implements ContratsRepositoryInterface {
 
         try{
             conn = Database.getConnection();
-            String sql = "SELECT contrats.id as contrat_id , partenaire.id as partenaire_id , * from contrats LEFT JOIN partenaire on partenaire.id = contrats.partenaireid WHERE contrats.id = ?";
+            String sql ="SELECT Offres.id as offre_id , partenaire.id as partenaire_id , Billets.id as billet_id ,Contrats.* FROM Contrats LEFT JOIN Offres ON Offres.contratid = Contrats.id LEFT JOIN Billets ON Billets.contratid = Contrats.id JOIN Partenaire ON Contrats.partenaireid = Partenaire.id WHERE Contrats.id = ?";
 
             stmt = conn.prepareStatement(sql);
             stmt.setObject(1 , idContrat);
@@ -63,17 +64,36 @@ public class ContratsRepository implements ContratsRepositoryInterface {
 
             if(rs.next()){
 
-                Partenaire partenaire = PartenaireRepository.fromResultSet(rs);
-
-
                 contrat = fromResultSet(rs);
 
+                UUID partenaireId = rs.getObject("partenaire_id", UUID.class);
+                Partenaire partenaire = repository.findPartenaireById(partenaireId);
                 contrat.setPartenaire(partenaire);
 
+
+                System.out.println(contrat.toString());
+
+                do{
+
+                    UUID OffresId = rs.getObject("offre_id", UUID.class);
+
+                    UUID BilletsId = rs.getObject("billet_id", UUID.class);
+
+
+                    if (BilletsId != null) {
+                        Billets billet = repositoryBillets.findOneBillet(BilletsId);
+                        contrat.setBillets(billet);
+                    }
+
+                    if (OffresId != null) {
+                        Offres Offre =  repositoryOffres.getOffreById(OffresId);
+                        contrat.setOffres(Offre);
+                    }
+
+                }while(rs.next());
+
+
             }
-
-
-
 
 
         } catch (SQLException e) {
@@ -94,12 +114,14 @@ public class ContratsRepository implements ContratsRepositoryInterface {
 
         try {
             conn = Database.getConnection();
-            String sql = "SELECT * FROM contrats";
+            String sql = "SELECT Contrats.partenaireid as partenaire_id ,  contrats.id as contrat_id ,* FROM contrats";
             stmt = conn.prepareStatement(sql);
             rs = stmt.executeQuery();
 
             while (rs.next()) {
                 Contrats contrat = fromResultSet(rs);
+                Partenaire partenaire = repository.findPartenaireById(rs.getObject("partenaire_id", UUID.class));
+                contrat.setPartenaire(partenaire);
                 contratsList.add(contrat);
             }
         } catch (SQLException e) {
@@ -201,5 +223,8 @@ public class ContratsRepository implements ContratsRepositoryInterface {
             throw new RuntimeException(e);
         }
     }
+
+
+
 
 }

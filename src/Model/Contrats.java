@@ -1,6 +1,7 @@
 package Model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,11 +19,14 @@ public class Contrats {
 
     private Partenaire partenaire;
     private List<Offres> offres;
+    private List<Billets> billets;
 
 
 
     public Contrats() {
         this.id = UUID.randomUUID();
+        this.offres = new ArrayList<>();
+        this.billets = new ArrayList<>();
     }
 
 
@@ -55,6 +59,9 @@ public class Contrats {
     public List<Offres> GetOffres() {
         return offres;
     }
+    public List<Billets> GetBillets() {
+        return billets;
+    }
 
 
 
@@ -83,8 +90,11 @@ public class Contrats {
     public void setPartenaire(Partenaire partenaire) {
         this.partenaire = partenaire;
     }
-    public void setOffres(List<Offres> offres) {
-        this.offres = offres;
+    public void setOffres(Offres offre) {
+        this.offres.add(offre);
+    }
+    public void setBillets(Billets billet) {
+        this.billets.add(billet);
     }
 
 
