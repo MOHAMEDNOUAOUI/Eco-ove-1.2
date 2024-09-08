@@ -355,6 +355,43 @@ public class BilletsService implements BilletsServiceInterface {
 
     @Override
     public void deleteBillet() throws SQLException {
+        System.out.println("Please enter a billet ID : ");
 
+
+
+
+
+        boolean choice = false;
+
+        while(!choice) {
+
+            String value = scanner.nextLine();
+            UUID billetid = UUID.fromString(value);
+            Billets billet = billetsRepository.findOneBillet(billetid);
+
+
+
+            if(billet != null) {
+                System.out.println("Ow Here you go we found the Billet you looking for ");
+                System.out.println();
+                System.out.println("Are you sure you want to delete this offer ? (yes / no )");
+                String choix = scanner.nextLine().toLowerCase().trim();
+
+                if(choix.equals("yes")) {
+                    System.out.println(billetsRepository.deleteBillet(billet));
+                }
+                else {
+                    return;
+                }
+
+
+
+
+                choice = true;
+            }else {
+                System.out.println("We couldnt find this offer , please try again ");
+
+            }
+        }
     }
 }

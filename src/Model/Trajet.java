@@ -21,6 +21,7 @@ public class Trajet {
         this.billetsList = new ArrayList<>();
     }
 
+
     public UUID getId() {
         return id;
     }

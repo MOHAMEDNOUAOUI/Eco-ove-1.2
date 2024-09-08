@@ -16,9 +16,7 @@ public class Reservation {
     private String destination;
     private StatutReservation statut_reservation;
 
-    public Reservation() {
-        this.id = UUID.randomUUID();
-    }
+    public Reservation() {this.id = UUID.randomUUID();}
 
     public UUID getId() {
         return id;
@@ -35,8 +33,8 @@ public class Reservation {
     public List<Billets> getBilletsList() {
         return billetsList;
     }
-    public void setBilletsList(List<Billets> billetsList) {
-        this.billetsList = billetsList;
+    public void setBilletsList(Billets billet) {
+        this.billetsList.add(billet);
     }
     public LocalDate getDate_reservation() {
         return date_reservation;

@@ -19,7 +19,6 @@ public interface ReservationRepositoryInterface {
     public void updateReservation(Reservation reservation , String column , String value) throws SQLException;
     public List<Reservation> getAllReservations() throws SQLException;
     public Reservation getReservationById(UUID id) throws SQLException;
-    public void CancelReservation(Reservation reservation) throws SQLException;
 
 
 }

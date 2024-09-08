@@ -11,9 +11,7 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import Enum.*;
 
@@ -86,15 +84,36 @@ public class TrajetRepository implements TrajetRepositoryInterface {
         ResultSet rs = null;
 
         List<Trajet> trajetsList = new ArrayList<>();
+        Map<UUID , Trajet> trajetMap = new HashMap<>();
 
         try {
             conn = Database.getConnection();
-            String sql = "SELECT * FROM trajet";
+            String sql = "SELECT B.id as billet_id , B.prix_achat , B.prix_vente , B.date_vente , B.statut_billet , B.type_transport ,trajet.* FROM trajet JOIN Billets as B on B.trajet_id = trajet.id WHERE B.reservation_id IS NULL";
             stmt = conn.prepareStatement(sql);
             rs = stmt.executeQuery();
 
             while (rs.next()) {
-                Trajet trajet = fromResultSet(rs);
+                UUID trajetId = rs.getObject("id", UUID.class);
+                Trajet trajet = trajetMap.get(trajetId);
+                if (trajet == null) {
+                    trajet = fromResultSet(rs);
+                   trajetMap.put(trajetId, trajet);
+                }
+
+                UUID billetId = rs.getObject("billet_id", UUID.class);
+
+                if (billetId != null) {
+                    Billets billet = new Billets();
+                    billet.setId(billetId);
+                    billet.setPrix_achat(rs.getBigDecimal("prix_achat"));
+                    billet.setPrix_vente(rs.getBigDecimal("prix_vente"));
+                    billet.setDate_vente(rs.getObject("date_vente", LocalDate.class));
+                    billet.setStatut_billet(StatutBillets.valueOf(rs.getString("statut_billet")));
+                    billet.setType_transport(TypeTransport.valueOf(rs.getString("type_transport")));
+
+                    trajet.setBilletsList(billet);
+                }
+
                 trajetsList.add(trajet);
             }
         } catch (SQLException e) {

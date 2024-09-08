@@ -72,7 +72,7 @@ public class UserRepository implements UserRepositoryInterface {
 
         try {
             conn = Database.getConnection();
-            String sql = "SELECT RESERVATION.id as reservation_id , * FROM USERS JOIN RESERVATION ON Users.id = RESERVATION.user_id WHERE id = ?";
+            String sql = "select * from users where id = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setObject(1, id);
             rs = pstmt.executeQuery();

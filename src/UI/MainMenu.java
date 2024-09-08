@@ -13,8 +13,10 @@ public class MainMenu {
     public static OffresService offresService = new OffresService();
     public static BilletsService billetsService = new BilletsService();
     public static TrajetService trajetService = new TrajetService();
+    public static ReservationService reservationService = new ReservationService();
 
-    public static void menu() throws ClassNotFoundException, InterruptedException, SQLException {
+
+    public static void menu() throws Exception {
         while (true) {
             System.out.println();
             System.out.println(" -----------------------------");
@@ -25,6 +27,9 @@ public class MainMenu {
             System.out.println("|  3 : Gestion Du Offres      |");
             System.out.println("|  4 : Gestion Du Billets     |");
             System.out.println("|  5 : Gestion Du Trajets     |");
+            System.out.println("|  6 : Gestion Du Utilisateur |");
+            System.out.println("|  7 : Gestion Du Reservation |");
+            System.out.println("|  8 : Profile Hub            |");
             System.out.println("|                             |");
             System.out.println(" -----------------------------");
             System.out.println();
@@ -48,6 +53,15 @@ public class MainMenu {
                 case 5 :
                     choicegestionTrajets();
                     break;
+                case 6 :
+                    choicegestionUsers();
+                    break;
+                case 7 :
+                    choicegestionReservation();
+                    break;
+                    case 8 :
+                        profileHub();
+                        break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
@@ -380,7 +394,112 @@ public class MainMenu {
     }
 
 
+    public static void  choicegestionUsers() throws SQLException , ClassNotFoundException , InterruptedException {
+        boolean check = false;
 
+
+        while (check == false) {
+
+            System.out.println();
+            System.out.println(" -----------------------------");
+            System.out.println("|                             |");
+            System.out.println("|      Gestion Trajets        |");
+            System.out.println("|  1 : Create User            |");
+            System.out.println("|  2 : Modifier User          |");
+            System.out.println("|  3 : Remove User            |");
+            System.out.println("|  4 : Find User              |");
+            System.out.println("|  5 : List All Users         |");
+            System.out.println("|  6 : Return                 |");
+            System.out.println("|                             |");
+            System.out.println(" -----------------------------");
+            System.out.print("Enter Your Choice : ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+
+
+
+            switch (choice) {
+                case 1:
+
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+
+                    break;
+                case 4:
+
+                    break;
+                case 5:
+
+                    break;
+
+                case 6:
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+
+
+        }
+    }
+
+    public static void choicegestionReservation() throws Exception {
+        boolean check = false;
+
+
+        while (check == false) {
+
+            System.out.println();
+            System.out.println(" -----------------------------");
+            System.out.println("|                             |");
+            System.out.println("|      Gestion Reservation    |");
+            System.out.println("|  1 : Make Reservation       |");
+            System.out.println("|  2 : Find Reservation       |");
+            System.out.println("|  3 : List All Reservations  |");
+            System.out.println("|  4 : Cancel Reservation     |");
+            System.out.println("|  5 : Return                 |");
+            System.out.println("|                             |");
+            System.out.println(" -----------------------------");
+            System.out.print("Enter Your Choice : ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+
+
+
+            switch (choice) {
+                case 1:
+                    reservationService.makereservation();
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+
+                    break;
+
+                    case 4:
+                        break;
+                case 5:
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+
+
+        }
+
+
+
+    }
+
+
+    public static void profileHub() throws SQLException , ClassNotFoundException , InterruptedException {
+
+    }
 
 
 }
