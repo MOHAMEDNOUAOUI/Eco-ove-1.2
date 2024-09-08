@@ -12,7 +12,7 @@ public class Trajet {
     private String ville_depart;
     private String ville_arrivee;
     private Double distanceKm;
-    private Duration travelTime;
+    private String travelTime;
     private List<Billets> billetsList;
     private TrajetStatus trajet_status;
 
@@ -45,10 +45,10 @@ public class Trajet {
     public void setDistanceKm(Double distanceKm) {
         this.distanceKm = distanceKm;
     }
-    public Duration getTravelTime() {
+    public String getTravelTime() {
         return travelTime;
     }
-    public void setTravelTime(Duration travelTime) {
+    public void setTravelTime(String travelTime) {
         this.travelTime = travelTime;
     }
     public List<Billets> getBilletsList() {

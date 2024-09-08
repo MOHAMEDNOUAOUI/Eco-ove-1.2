@@ -1,9 +1,7 @@
 package Model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import Enum.StatutContrat;
 
@@ -96,6 +94,7 @@ public class Contrats {
     public void setBillets(Billets billet) {
         this.billets.add(billet);
     }
+
 
 
 

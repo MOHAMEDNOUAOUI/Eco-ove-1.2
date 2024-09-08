@@ -8,7 +8,7 @@ CREATE TABLE TRAJET (
     ville_depart VARCHAR(255),
     ville_arrivee VARCHAR(255),
     distanceKm DECIMAL(6, 2),
-    travelTime INTERVAL
+    travelTime VARCHAR(255)
 )
 
 CREATE TABLE USERS (

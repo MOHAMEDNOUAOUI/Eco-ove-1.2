@@ -159,13 +159,13 @@ public class ContratsService implements ContratsServiceInterface {
         if(contrat != null){
 
 
-            System.out.printf("| %-" + idWidth + "s | %-" + dateWidth + "s | %-" + dateWidth + "s | %-" + typeWidth + "s | %-" + statutWidth + "s | %-" + conditionsWidth + "s| %-" + nameWidth + "s | %-"+ statutWidth +"s |\n",
-                    "ID", "DATE_DEBUT", "DATE_FIN", "TARIF_SPECIAL", "STATUT_CONTRAT", "CONDITION_SPECIAL", "PARTENAIRE" , "OffersCount");
-            System.out.println(new String(new char[idWidth + dateWidth + dateWidth + typeWidth + statutWidth + conditionsWidth + nameWidth + statutWidth]).replace('\0', '-'));
+            System.out.printf("| %-" + idWidth + "s | %-" + dateWidth + "s | %-" + dateWidth + "s | %-" + typeWidth + "s | %-" + statutWidth + "s | %-" + conditionsWidth + "s| %-" + nameWidth + "s | %-"+ statutWidth +"s | %-"+ statutWidth +"s |\n",
+                    "ID", "DATE_DEBUT", "DATE_FIN", "TARIF_SPECIAL", "STATUT_CONTRAT", "CONDITION_SPECIAL", "PARTENAIRE" , "OffersCount" , "BilletsCount");
+            System.out.println(new String(new char[idWidth + dateWidth + dateWidth + typeWidth + statutWidth + conditionsWidth + nameWidth + statutWidth + statutWidth]).replace('\0', '-'));
 
 
 
-            System.out.printf("| %-" + idWidth + "s | %-" + dateWidth + "s | %-" + dateWidth + "s | %-" + typeWidth + "s | %-" + statutWidth + "s | %-" + conditionsWidth + "s | %-" + nameWidth + "s | %-"+ statutWidth +"s | \n",
+            System.out.printf("| %-" + idWidth + "s | %-" + dateWidth + "s | %-" + dateWidth + "s | %-" + typeWidth + "s | %-" + statutWidth + "s | %-" + conditionsWidth + "s | %-" + nameWidth + "s | %-"+ statutWidth +"s | %-"+ statutWidth +"s | \n",
                     contrat.getId(),
                     contrat.getDate_debut().toString(),
                     contrat.getDate_fin().toString(),
@@ -173,10 +173,11 @@ public class ContratsService implements ContratsServiceInterface {
                     contrat.getStatut_contrat().name(),
                     contrat.getConditions_accord(),
                     contrat.GetPartenaire().getNomCompagnie(),
-                    contrat.GetOffres().stream().count()
+                    contrat.GetOffres().stream().count(),
+                    contrat.GetBillets().stream().count()
             );
 
-            System.out.println(new String(new char[idWidth + nameWidth + contactWidth + typeWidth + zoneWidth + conditionsWidth + statutWidth + dateWidth + 11]).replace('\0', '-'));
+            System.out.println(new String(new char[idWidth + nameWidth + contactWidth + typeWidth + zoneWidth + conditionsWidth + statutWidth + dateWidth + statutWidth + 11]).replace('\0', '-'));
 
 
         }

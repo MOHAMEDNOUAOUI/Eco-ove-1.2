@@ -1,8 +1,6 @@
 package UI;
 
-import Service.ContratsService;
-import Service.OffresService;
-import Service.PartenaireService;
+import Service.*;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -13,6 +11,8 @@ public class MainMenu {
     public static PartenaireService partenaireService = new PartenaireService();
     public static ContratsService contratsService = new ContratsService();
     public static OffresService offresService = new OffresService();
+    public static BilletsService billetsService = new BilletsService();
+    public static TrajetService trajetService = new TrajetService();
 
     public static void menu() throws ClassNotFoundException, InterruptedException, SQLException {
         while (true) {
@@ -24,6 +24,7 @@ public class MainMenu {
             System.out.println("|  2 : Gestion Du Contrats    |");
             System.out.println("|  3 : Gestion Du Offres      |");
             System.out.println("|  4 : Gestion Du Billets     |");
+            System.out.println("|  5 : Gestion Du Trajets     |");
             System.out.println("|                             |");
             System.out.println(" -----------------------------");
             System.out.println();
@@ -43,6 +44,9 @@ public class MainMenu {
                     break;
                 case 4:
                     choicegestionBillet();
+                    break;
+                case 5 :
+                    choicegestionTrajets();
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
@@ -295,19 +299,19 @@ public class MainMenu {
 
             switch (choice) {
                 case 1:
-
+                    billetsService.addBillet();
                     break;
                 case 2:
-
+                    billetsService.updateBillet();
                     break;
                 case 3:
-
+                    billetsService.deleteBillet();
                     break;
                 case 4:
-
+                    billetsService.getBillet();
                     break;
                 case 5:
-
+                    billetsService.getAllBillets();
                     break;
 
                 case 6:
@@ -320,6 +324,59 @@ public class MainMenu {
         }
 
 
+    }
+
+
+    public static void choicegestionTrajets() throws SQLException , ClassNotFoundException , InterruptedException {
+        boolean check = false;
+
+
+        while (check == false) {
+
+            System.out.println();
+            System.out.println(" -----------------------------");
+            System.out.println("|                             |");
+            System.out.println("|      Gestion Trajets        |");
+            System.out.println("|  1 : Add Trajets            |");
+            System.out.println("|  2 : Modifier Trajet        |");
+            System.out.println("|  3 : Remove Trajet          |");
+            System.out.println("|  4 : Find a Trajet          |");
+            System.out.println("|  5 : List All Trajets       |");
+            System.out.println("|  6 : Return                 |");
+            System.out.println("|                             |");
+            System.out.println(" -----------------------------");
+            System.out.print("Enter Your Choice : ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+
+
+
+            switch (choice) {
+                case 1:
+                    trajetService.addTrajet();
+                    break;
+                case 2:
+                    trajetService.updateTrajet();
+                    break;
+                case 3:
+                   trajetService.deleteTrajet();
+                    break;
+                case 4:
+                    trajetService.gettrajet();
+                    break;
+                case 5:
+                    trajetService.getAllTrajets();
+                    break;
+
+                case 6:
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+
+
+        }
     }
 
 

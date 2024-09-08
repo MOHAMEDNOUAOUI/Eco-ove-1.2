@@ -82,12 +82,17 @@ public class ContratsRepository implements ContratsRepositoryInterface {
 
                     if (BilletsId != null) {
                         Billets billet = repositoryBillets.findOneBillet(BilletsId);
-                        contrat.setBillets(billet);
+                        if (contrat.GetBillets().stream().noneMatch(b -> b.getId().equals(billet.getId()))) {
+                            contrat.setBillets(billet);
+                        }
+
                     }
 
                     if (OffresId != null) {
                         Offres Offre =  repositoryOffres.getOffreById(OffresId);
-                        contrat.setOffres(Offre);
+                        if (contrat.GetOffres().stream().noneMatch(o -> o.getId().equals(Offre.getId()))) {
+                            contrat.setOffres(Offre);
+                        }
                     }
 
                 }while(rs.next());
