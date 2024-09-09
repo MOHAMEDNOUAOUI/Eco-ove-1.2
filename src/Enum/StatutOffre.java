@@ -1,7 +1,7 @@
 package Enum;
 
 public enum StatutOffre {
-    ACTIV,
+    ACTIVE,
     EXPIREE,
     SUSPENDU
 }

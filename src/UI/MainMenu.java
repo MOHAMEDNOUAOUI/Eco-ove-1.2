@@ -29,7 +29,7 @@ public class MainMenu {
             System.out.println("|  5 : Gestion Du Trajets     |");
             System.out.println("|  6 : Gestion Du Utilisateur |");
             System.out.println("|  7 : Gestion Du Reservation |");
-            System.out.println("|  8 : Profile Hub            |");
+            System.out.println("|  8 : return                 |");
             System.out.println("|                             |");
             System.out.println(" -----------------------------");
             System.out.println();
@@ -60,8 +60,7 @@ public class MainMenu {
                     choicegestionReservation();
                     break;
                     case 8 :
-                        profileHub();
-                        break;
+                        return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
@@ -403,13 +402,12 @@ public class MainMenu {
             System.out.println();
             System.out.println(" -----------------------------");
             System.out.println("|                             |");
-            System.out.println("|      Gestion Trajets        |");
-            System.out.println("|  1 : Create User            |");
-            System.out.println("|  2 : Modifier User          |");
-            System.out.println("|  3 : Remove User            |");
-            System.out.println("|  4 : Find User              |");
-            System.out.println("|  5 : List All Users         |");
-            System.out.println("|  6 : Return                 |");
+            System.out.println("|     Gestion Utilisateurs    |");
+            System.out.println("|  1 : Modifier User          |");
+            System.out.println("|  2 : Remove User            |");
+            System.out.println("|  3 : Find User              |");
+            System.out.println("|  4 : List All Users         |");
+            System.out.println("|  5 : Return                 |");
             System.out.println("|                             |");
             System.out.println(" -----------------------------");
             System.out.print("Enter Your Choice : ");
@@ -433,10 +431,6 @@ public class MainMenu {
 
                     break;
                 case 5:
-
-                    break;
-
-                case 6:
                     return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
@@ -456,11 +450,10 @@ public class MainMenu {
             System.out.println(" -----------------------------");
             System.out.println("|                             |");
             System.out.println("|      Gestion Reservation    |");
-            System.out.println("|  1 : Make Reservation       |");
-            System.out.println("|  2 : Find Reservation       |");
-            System.out.println("|  3 : List All Reservations  |");
-            System.out.println("|  4 : Cancel Reservation     |");
-            System.out.println("|  5 : Return                 |");
+            System.out.println("|  1 : Find Reservation       |");
+            System.out.println("|  2 : List All Reservations  |");
+            System.out.println("|  3 : Cancel Reservation     |");
+            System.out.println("|  4 : Return                 |");
             System.out.println("|                             |");
             System.out.println(" -----------------------------");
             System.out.print("Enter Your Choice : ");
@@ -472,7 +465,7 @@ public class MainMenu {
 
             switch (choice) {
                 case 1:
-                    reservationService.makereservation();
+
                     break;
                 case 2:
 
@@ -482,8 +475,6 @@ public class MainMenu {
                     break;
 
                     case 4:
-                        break;
-                case 5:
                     return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
@@ -497,9 +488,7 @@ public class MainMenu {
     }
 
 
-    public static void profileHub() throws SQLException , ClassNotFoundException , InterruptedException {
 
-    }
 
 
 }

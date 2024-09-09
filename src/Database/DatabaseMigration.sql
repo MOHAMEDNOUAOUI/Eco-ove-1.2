@@ -36,6 +36,5 @@ CREATE TABLE BILLETS (
     date_vente DATE,
     statut_billet statut_billet,
     type_transport type_transport,
-    trajet_id UUID references TRAJET(id),
-    reservation_id UUID references RESERVATION(id)
+    trajet_id UUID references TRAJET(id)
 )

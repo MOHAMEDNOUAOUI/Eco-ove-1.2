@@ -135,7 +135,7 @@ public class TrajetRepository implements TrajetRepositoryInterface {
         Trajet trajet = null;
         try {
             conn = Database.getConnection();
-            String sql = "select B.prix_achat , B.prix_vente , B.date_vente , B.statut_billet , B.type_transport , B.reservation_id , B.id as Billet_id ,Trajet.* from Trajet LEFT JOIN Billets AS B on B.trajet_id = Trajet.id WHERE Trajet.id = ? AND B.reservation_id IS NULL";
+            String sql = "select B.prix_achat , B.prix_vente , B.date_vente , B.statut_billet , B.type_transport , B.id as Billet_id ,Trajet.* from Trajet LEFT JOIN Billets AS B on B.trajet_id = Trajet.id WHERE Trajet.id = ? AND B.statut_billet = ENATTENTE";
             stmt = conn.prepareStatement(sql);
             stmt.setObject(1, id);
             rs = stmt.executeQuery();

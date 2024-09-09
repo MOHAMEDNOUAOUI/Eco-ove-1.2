@@ -6,6 +6,8 @@ import Enum.TypeTransport;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -17,7 +19,7 @@ public class Billets {
     private StatutBillets statut_billet;
     private TypeTransport type_transport;
     private Trajet trajet;
-    private Reservation reservation;
+    private List<Reservation> reservationList = new ArrayList<>();
     private Contrats contrat;
 
 
@@ -67,11 +69,11 @@ public class Billets {
     public void setTrajet(Trajet trajet) {
         this.trajet = trajet;
     }
-    public Reservation getReservation() {
-        return reservation;
+    public List<Reservation> getReservation() {
+        return reservationList;
     }
     public void setReservation(Reservation reservation) {
-        this.reservation = reservation;
+        this.reservationList.add(reservation);
     }
     public Contrats getContrat() {
         return contrat;

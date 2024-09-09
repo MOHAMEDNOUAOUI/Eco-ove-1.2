@@ -92,7 +92,7 @@ public class OffresService implements OffreServiceinterface {
 
                     }catch (IllegalArgumentException e){
                         System.out.println("invalid contrat statut . Defaulting to ACTIV");
-                        statut_offre = StatutOffre.ACTIV;
+                        statut_offre = StatutOffre.ACTIVE;
                     }
                 }
 
