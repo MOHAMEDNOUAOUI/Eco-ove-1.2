@@ -14,6 +14,7 @@ public class MainMenu {
     public static BilletsService billetsService = new BilletsService();
     public static TrajetService trajetService = new TrajetService();
     public static ReservationService reservationService = new ReservationService();
+    public static UsersService usersService = new UsersService();
 
 
     public static void menu() throws Exception {
@@ -422,13 +423,13 @@ public class MainMenu {
 
                     break;
                 case 2:
-
+                    usersService.deleteUser();
                     break;
                 case 3:
-
+                    usersService.getUser();
                     break;
                 case 4:
-
+                    usersService.getAllUsers();
                     break;
                 case 5:
                     return;

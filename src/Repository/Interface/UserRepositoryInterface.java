@@ -17,6 +17,6 @@ public interface UserRepositoryInterface {
     public String deleteUser(Users users) throws SQLException;
     public void updateUser(Users users, String column , String value) throws SQLException;
     public List<Users> getAllUsers() throws SQLException;
-    public Users getUserById(UUID id) throws SQLException;
+    public Users getUserByEmail(String email) throws SQLException;
 
 }

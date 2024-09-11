@@ -12,69 +12,61 @@ public class PathFindingService {
         this.graph = graph;
     }
 
-    public List<Trajet> findShortestPath(String origin, String destination) {
-        List<Trajet> path = new ArrayList<>();
+    public List<List<Trajet>> findAllPaths(String origin, String destination) {
+        List<List<Trajet>> allPaths = new ArrayList<>();
         if (origin.equals(destination)) {
-            return path;
+            return allPaths;
         }
 
-
-        Map<String, Trajet> previous = new HashMap<>();
-
-        Queue<String> queue = new LinkedList<>();
+        Queue<List<Trajet>> queue = new LinkedList<>();
+        queue.offer(new ArrayList<>());
 
         Set<String> visited = new HashSet<>();
 
-        queue.add(origin);
-        visited.add(origin);
-
         while (!queue.isEmpty()) {
-            String current = queue.poll();
+            List<Trajet> path = queue.poll();
+            String current = path.isEmpty() ? origin : path.get(path.size() - 1).getVille_arrivee();
 
-            for (Trajet trajet : graph.getAdjList().getOrDefault(current, Collections.emptyList())) {
-                String neighbor = trajet.getVille_arrivee();
-                if (!visited.contains(neighbor)) {
-                    visited.add(neighbor);
-                    queue.add(neighbor);
-                    previous.put(neighbor, trajet);
+            if (current.equals(destination)) {
+                allPaths.add(new ArrayList<>(path));
+                continue;
+            }
 
-                    if (neighbor.equals(destination)) {
-                        return constructPath(previous, origin, destination);
+            if (!visited.contains(current)) {
+                visited.add(current);
+
+                for (Trajet trajet : graph.getAdjList().getOrDefault(current, Collections.emptyList())) {
+                    if (!visited.contains(trajet.getVille_arrivee())) {
+                        List<Trajet> newPath = new ArrayList<>(path);
+                        newPath.add(trajet);
+                        queue.offer(newPath);
                     }
                 }
             }
         }
 
-        return path;
+        return allPaths;
     }
 
-
-    private List<Trajet> constructPath(Map<String, Trajet> previous, String origin, String destination) {
-        List<Trajet> path = new LinkedList<>();
-        for (String at = destination; at != null; at = previous.containsKey(at) ? previous.get(at).getVille_depart() : null) {
-            Trajet trajet = previous.get(at);
-            if (trajet != null) {
-                path.add(trajet);
-            }
-        }
-        Collections.reverse(path);
-        return path;
-    }
-
-    public void displayPathAndTickets(String origin, String destination) {
-        List<Trajet> path = findShortestPath(origin, destination);
-        if (path.isEmpty()) {
-            System.out.println("No path found from " + origin + " to " + destination);
+    public void displayAllPathsAndTickets(String origin, String destination) {
+        List<List<Trajet>> allPaths = findAllPaths(origin, destination);
+        if (allPaths.isEmpty()) {
+            System.out.println("No paths found from " + origin + " to " + destination);
             return;
         }
 
-        System.out.println("Path from " + origin + " to " + destination + ":");
-        for (Trajet trajet : path) {
-            System.out.print("From " + trajet.getVille_depart() + " to " + trajet.getVille_arrivee() +
-                    " with tickets: ");
-            List<Billets> billetsList = trajet.getBilletsList();
-            for (Billets billets : billetsList) {
-                System.out.print(billets.getId() + " with  " + billets.getType_transport());
+        System.out.println("All paths from " + origin + " to " + destination + ":");
+        for (int i = 0; i < allPaths.size(); i++) {
+            System.out.println("Path " + (i + 1) + ":");
+            List<Trajet> path = allPaths.get(i);
+            for (Trajet trajet : path) {
+                System.out.print("From " + trajet.getVille_depart() + " to " + trajet.getVille_arrivee() +
+                        " with tickets: ");
+                List<Billets> billetsList = trajet.getBilletsList();
+                for (Billets billets : billetsList) {
+                    System.out.print(billets.getId() + " with " + billets.getType_transport() + ", ");
+                }
+                System.out.println();
             }
             System.out.println();
         }

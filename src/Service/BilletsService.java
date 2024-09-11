@@ -168,6 +168,8 @@ public class BilletsService implements BilletsServiceInterface {
                 System.out.println("TRAJET DETAILS:");
                 System.out.println("Departure City:            " + billet.getTrajet().getVille_depart());
                 System.out.println("Arrival City:              " + billet.getTrajet().getVille_arrivee());
+                System.out.println("Date depart:               " + billet.getDate_depart());
+                System.out.println("Date arrive:               " + billet.getDate_arrive());
                 System.out.println("Distance:                  " + billet.getTrajet().getDistanceKm() + " km");
                 System.out.println("Duration:                  " + billet.getTrajet().getTravelTime());
                 System.out.println("───────────────────────────────────────────────");
@@ -211,6 +213,8 @@ public class BilletsService implements BilletsServiceInterface {
                 System.out.println("TRAJET DETAILS:");
                 System.out.println("Departure City:            " + billet.getTrajet().getVille_depart());
                 System.out.println("Arrival City:              " + billet.getTrajet().getVille_arrivee());
+                System.out.println("Date depart:               " + billet.getDate_depart());
+                System.out.println("Date arrive:               " + billet.getDate_arrive());
                 System.out.println("Distance:                  " + billet.getTrajet().getDistanceKm() + " km");
                 System.out.println("Duration:                  " + billet.getTrajet().getTravelTime());
                 System.out.println("───────────────────────────────────────────────");

@@ -67,12 +67,16 @@ public class TrajetRepository implements TrajetRepositoryInterface {
 
         conn = Database.getConnection();
 
-        String sql = "UPDATE trajet SET trajet_status = 'UNAVAILABLE' WHERE id = ?";
-        pstmt = conn.prepareStatement(sql);
-        pstmt.setObject(1,trajet.getId());
-        pstmt.executeUpdate();
+       try{
+           String sql = "UPDATE trajet SET trajet_status = 'UNAVAILABLE' WHERE id = ?";
+           pstmt = conn.prepareStatement(sql);
+           pstmt.setObject(1,trajet.getId());
+           pstmt.executeUpdate();
+       } catch (RuntimeException e) {
+           throw new RuntimeException(e);
+       }
 
-        return "";
+        return "Trajet got deleted";
     }
 
 
@@ -88,7 +92,7 @@ public class TrajetRepository implements TrajetRepositoryInterface {
 
         try {
             conn = Database.getConnection();
-            String sql = "SELECT B.id as billet_id , B.prix_achat , B.prix_vente , B.date_vente , B.statut_billet , B.type_transport ,trajet.* FROM trajet JOIN Billets as B on B.trajet_id = trajet.id WHERE B.reservation_id IS NULL";
+            String sql = "SELECT B.id as billet_id , B.prix_achat , B.prix_vente , B.date_vente , B.statut_billet , B.type_transport ,trajet.* FROM trajet JOIN Billets as B on B.trajet_id = trajet.id WHERE B.statut_billet = 'ENATTENTE'";
             stmt = conn.prepareStatement(sql);
             rs = stmt.executeQuery();
 
@@ -135,7 +139,7 @@ public class TrajetRepository implements TrajetRepositoryInterface {
         Trajet trajet = null;
         try {
             conn = Database.getConnection();
-            String sql = "select B.prix_achat , B.prix_vente , B.date_vente , B.statut_billet , B.type_transport , B.id as Billet_id ,Trajet.* from Trajet LEFT JOIN Billets AS B on B.trajet_id = Trajet.id WHERE Trajet.id = ? AND B.statut_billet = ENATTENTE";
+            String sql = "select B.prix_achat , B.prix_vente , B.date_vente , B.statut_billet , B.type_transport , B.id as Billet_id ,Trajet.* from Trajet LEFT JOIN Billets AS B on B.trajet_id = Trajet.id WHERE Trajet.id = ? AND trajet.trajet_status = 'AVAILABLE'";
             stmt = conn.prepareStatement(sql);
             stmt.setObject(1, id);
             rs = stmt.executeQuery();
@@ -177,38 +181,44 @@ public class TrajetRepository implements TrajetRepositoryInterface {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         Trajet trajet = null;
+        HashSet<UUID> processedTrajetIds = new HashSet<>();
+
         try {
             conn = Database.getConnection();
-            String sql = "select trajet.id as trajetId ,billets.id as billet_id , * from trajet JOIN billets ON billets.trajet_id = trajet.id WHERE trajet.ville_depart = ? AND trajet.ville_arrivee = ? AND billets.reservation_id IS NULL";
+            String sql = "select b.id as billet_id,b.prix_achat,b.prix_vente,b.date_vente,b.statut_billet ,b.type_transport,b.contratid ,b.trajet_id,b.date_arrive,b.date_depart , trajet.* from trajet JOIN billets as b ON b.trajet_id = trajet.id WHERE trajet.ville_depart = ? AND trajet.ville_arrivee = ?";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setObject(1, depart);
-            pstmt.setObject(2, arrival);
+            pstmt.setString(1, depart);
+            pstmt.setString(2, arrival);
             rs = pstmt.executeQuery();
 
-            trajet = fromResultSet(rs);
+            while (rs.next()) {
+                UUID trajetId = rs.getObject("id", UUID.class);
 
-            do{
+                if (!processedTrajetIds.contains(trajetId)) {
+                    trajet = fromResultSet(rs);
+                    processedTrajetIds.add(trajetId);
+                }
+
+
                 UUID billet_id = rs.getObject("billet_id", UUID.class);
-                if(billet_id != null){
+                if (billet_id != null) {
                     Billets billet = new Billets();
                     billet.setId(billet_id);
                     billet.setPrix_vente(rs.getBigDecimal("prix_vente"));
                     billet.setPrix_achat(rs.getBigDecimal("prix_achat"));
                     billet.setType_transport(TypeTransport.valueOf(rs.getString("type_transport")));
                     billet.setStatut_billet(StatutBillets.valueOf(rs.getString("statut_billet")));
-                    billet.setDate_vente(rs.getDate("date_vente").toLocalDate());
+                    billet.setDate_arrive(rs.getDate("date_arrive").toLocalDate());
+                    billet.setDate_depart(rs.getDate("date_depart").toLocalDate());
+                    billet.setDate_vente(rs.getDate("date_vente") != null ?
+                            rs.getDate("date_vente").toLocalDate() : null);
 
                     trajet.setBilletsList(billet);
                 }
-
-            }while (rs.next());
-
-
-
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Error retrieving trajet by coordination", e);
         }
-
 
         return trajet;
     }
@@ -234,7 +244,7 @@ public class TrajetRepository implements TrajetRepositoryInterface {
                 pstmt.setObject(1 , UUID.fromString(value));
             }
             else if(column.equals("trajet_status")) {
-                pstmt.setString(1 , String.valueOf(TrajetStatus.valueOf(value)));
+                pstmt.setObject(1 , value , java.sql.Types.OTHER);
             }
             else {
                 pstmt.setString(1 , value);

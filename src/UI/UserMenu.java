@@ -34,7 +34,7 @@ public class UserMenu {
             scanner.nextLine();
             switch (choice) {
                 case 1:
-                    reservation();
+                    reservationService.makereservation();
                     break;
                 case 2:
                     profileHub();
@@ -53,9 +53,7 @@ public class UserMenu {
 
     }
 
-    public static void reservation() throws SQLException , ClassNotFoundException , InterruptedException {
 
-    }
 
 }
 

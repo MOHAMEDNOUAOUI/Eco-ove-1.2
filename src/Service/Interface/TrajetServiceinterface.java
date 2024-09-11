@@ -11,7 +11,7 @@ public interface TrajetServiceinterface {
     public void gettrajet() throws SQLException;
     public void getAllTrajets() throws SQLException, InterruptedException;
     public void updateTrajet() throws InterruptedException, SQLException;
-    public void deleteTrajet() throws SQLException;
+    public void deleteTrajet() throws SQLException, InterruptedException;
 
 
 }

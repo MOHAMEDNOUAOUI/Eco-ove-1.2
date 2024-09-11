@@ -32,6 +32,8 @@ public class BilletsRepository implements BilletsRepositoryInterface {
         if(rs.getDate("date_vente") != null) {
             b.setDate_vente(rs.getDate("date_vente").toLocalDate());
         }
+        b.setDate_depart(rs.getDate("date_depart").toLocalDate());
+        b.setDate_arrive(rs.getDate("date_arrive").toLocalDate());
         b.setStatut_billet(StatutBillets.valueOf(rs.getString("statut_billet")));
         b.setType_transport(TypeTransport.valueOf(rs.getString("type_transport")));
 
@@ -68,7 +70,6 @@ public class BilletsRepository implements BilletsRepositoryInterface {
 
 
                 UUID trajetid = rs.getObject("trajet_id", UUID.class);
-                UUID reservationid = rs.getObject("reservation_id", UUID.class);
 
                 if (trajetid != null) {
                     Trajet trajet = trajetRepository.getTrajetById(trajetid);
@@ -92,10 +93,7 @@ public class BilletsRepository implements BilletsRepositoryInterface {
                     billet.setContrat(contrat);
                 }
 
-//                if (reservationid != null) {
-//                    Reservation reservation = reservationRepository.getReservationById(reservationid);
-//                    billet.setReservation(reservation);
-//                }
+
 
             }
 
@@ -122,7 +120,6 @@ public class BilletsRepository implements BilletsRepositoryInterface {
             while(rs.next()){
                 Billets billet = fromResultSet(rs);
                 UUID trajetid = rs.getObject("trajet_id", UUID.class);
-                UUID reservationid = rs.getObject("reservation_id", UUID.class);
 
                 if (trajetid != null) {
                     Trajet trajet = trajetRepository.getTrajetById(trajetid);
@@ -141,13 +138,11 @@ public class BilletsRepository implements BilletsRepositoryInterface {
                     contrat.setStatut_contrat(StatutContrat.valueOf(rs.getString("statut_contrat")));
 
 
+
                     billet.setContrat(contrat);
                 }
 
-//                if (reservationid != null) {
-//                    Reservation reservation = reservationRepository.getReservationById(reservationid);
-//                    billet.setReservation(reservation);
-//                }
+
 
 
 

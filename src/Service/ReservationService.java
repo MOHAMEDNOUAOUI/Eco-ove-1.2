@@ -27,14 +27,18 @@ public class ReservationService implements ReservationServiceInterface {
         String destination = scanner.nextLine();
 
 
+
+
         List<Trajet> trajetList = trajetRepository.getAllTrajets();
+
+
 
         for (Trajet trajet : trajetList) {
             graphService.addConnection(trajet);
         }
 
         PathFindingService pathFindingService = new PathFindingService(graphService);
-        pathFindingService.displayPathAndTickets(origin, destination);
+        pathFindingService.displayAllPathsAndTickets(origin, destination);
 
     }
 

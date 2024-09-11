@@ -16,6 +16,8 @@ public class Billets {
     private BigDecimal prix_achat;
     private BigDecimal prix_vente;
     private LocalDate date_vente;
+    private LocalDate date_depart;
+    private LocalDate date_arrive;
     private StatutBillets statut_billet;
     private TypeTransport type_transport;
     private Trajet trajet;
@@ -80,6 +82,20 @@ public class Billets {
     }
     public void setContrat(Contrats contrat) {
         this.contrat = contrat;
+    }
+    public LocalDate getDate_depart(){
+        return this.date_depart;
+    }
+    public void setDate_depart(LocalDate date_depart) {
+        this.date_depart = date_depart;
+    }
+
+    public LocalDate getDate_arrive() {
+        return  this.date_arrive;
+    }
+
+    public void setDate_arrive(LocalDate dateArrive) {
+        this.date_arrive = dateArrive;
     }
 
 }
